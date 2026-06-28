@@ -1,13 +1,19 @@
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-app = pd.read_csv('application_record.csv')
-credit = pd.read_csv('credit_record.csv')
-print(app.head())
+# Read dataset
+app = pd.read_csv("application_record.csv")
+print("Number of people working status:")
 
-print(credit.head())
-print(app.shape)
-print(credit.shape)
-print(app.info())
-print(credit.info())
-print(app.isnull().sum())
-print(credit.isnull().sum())
+print(app["OCCUPATION_TYPE"].value_counts())
+plt.figure(figsize=(18,6))
+
+sns.countplot(
+    x="OCCUPATION_TYPE",
+    data=app,
+    palette="Set2"
+)
+plt.xticks(rotation=90)
+plt.title("Occupation Type Distribution")
+plt.show()
