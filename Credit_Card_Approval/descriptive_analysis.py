@@ -1,4 +1,5 @@
 import pandas as pd
+from sklearn.preprocessing import LabelEncoder
 
 app = pd.read_csv("application_record.csv")
 print("Duplicate rows before removing:")
@@ -13,3 +14,19 @@ print("Missing value percentage:")
 print(app.isnull().mean())
 app.drop(columns=['OCCUPATION_TYPE'], inplace=True)
 print(app.columns)
+app_clean = app.copy()
+app_clean['DAYS_BIRTH'] = app_clean['DAYS_BIRTH'].abs()
+app_clean['DAYS_EMPLOYED'] = app_clean['DAYS_EMPLOYED'].abs()
+print(app_clean[['DAYS_BIRTH', 'DAYS_EMPLOYED']].head())
+app_clean['FAMILY_DEPENDENCY'] = app_clean['CNT_FAM_MEMBERS'] - app_clean['CNT_CHILDREN']
+print(app_clean[['CNT_CHILDREN','CNT_FAM_MEMBERS','FAMILY_DEPENDENCY']].head())
+print(app_clean.select_dtypes(include='object').columns)
+le = LabelEncoder()
+app_clean['CODE_GENDER'] = le.fit_transform(app_clean['CODE_GENDER'])
+app_clean['FLAG_OWN_CAR'] = le.fit_transform(app_clean['FLAG_OWN_CAR'])
+app_clean['FLAG_OWN_REALTY'] = le.fit_transform(app_clean['FLAG_OWN_REALTY'])
+app_clean['NAME_INCOME_TYPE'] = le.fit_transform(app_clean['NAME_INCOME_TYPE'])
+app_clean['NAME_EDUCATION_TYPE'] = le.fit_transform(app_clean['NAME_EDUCATION_TYPE'])
+app_clean['NAME_FAMILY_STATUS'] = le.fit_transform(app_clean['NAME_FAMILY_STATUS'])
+app_clean['NAME_HOUSING_TYPE'] = le.fit_transform(app_clean['NAME_HOUSING_TYPE'])
+print(app_clean.head())
