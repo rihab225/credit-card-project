@@ -1,6 +1,15 @@
 import pandas as pd
 
 app = pd.read_csv("application_record.csv")
-print(app.head())
-print(app.info())
-print(app.describe())
+print("Duplicate rows before removing:")
+print(app.duplicated().sum())
+app.drop_duplicates(inplace=True)
+print("Duplicate rows after removing:")
+print(app.duplicated().sum())
+print(app.shape)
+print("Missing values in each column:")
+print(app.isnull().sum())
+print("Missing value percentage:")
+print(app.isnull().mean())
+app.drop(columns=['OCCUPATION_TYPE'], inplace=True)
+print(app.columns)
